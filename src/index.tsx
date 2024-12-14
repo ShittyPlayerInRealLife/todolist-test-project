@@ -1,21 +1,23 @@
-import React from "react";
+import React, { FC } from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { TodoListService } from "./services/todolist-service";
-import { TodoTaskService } from "./services/todotask-service";
 import { Provider } from "react-redux";
 import { store } from "./state";
+import { TodolistService } from "./services/todolist";
+import { TodotaskService } from "./services/todotask";
+import { AppLayout } from "./app-layout";
+import "./index.css";
+
+const App: FC = () => (
+  <Provider store={store}>
+    <TodolistService>
+      <TodotaskService>
+        <AppLayout />
+      </TodotaskService>
+    </TodolistService>
+  </Provider>
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
-root.render(
-  <Provider store={store}>
-    <TodoListService>
-      <TodoTaskService>
-        <App />
-      </TodoTaskService>
-    </TodoListService>
-  </Provider>,
-);
+root.render(<App />);

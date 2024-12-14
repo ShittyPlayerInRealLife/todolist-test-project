@@ -1,6 +1,10 @@
 export type TTodoList = {
   title: string;
-  filter: TTodoFilterValues;
+  filter: FilterValues;
 };
 
-export type TTodoFilterValues = "all" | "active" | "completed";
+export enum FilterValues {
+  ALL = "all",
+  ACTIVE = "active",
+  COMPLETED = "completed",
+}

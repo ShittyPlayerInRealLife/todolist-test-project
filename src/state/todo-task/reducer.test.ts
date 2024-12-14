@@ -1,8 +1,7 @@
 import { TTodoTasks } from "./types";
 import {
   addTaskAction,
-  changeTaskStatusAction,
-  changeTaskTitleAction,
+  updateTaskAction,
   removeTaskAction,
   todoTaskReducer,
 } from "./slice";
@@ -23,7 +22,7 @@ test("correct task should be added", () => {
   expect(endState[2].isDone).toBeFalsy();
 });
 
-test("correct task should be removed from correct array", () => {
+test("correct task should be removed", () => {
   const startState: TTodoTasks[] = [
     { id: "1", title: "1", isDone: false },
     { id: "2", title: "2", isDone: false },
@@ -44,7 +43,10 @@ test("correct task should change its title", () => {
     { id: "2", title: "2", isDone: false },
   ];
 
-  const action = changeTaskTitleAction({ id: "2", title: taskNewTitle });
+  const action = updateTaskAction({
+    id: "2",
+    changes: { title: taskNewTitle },
+  });
   const endState = todoTaskReducer(startState, action);
 
   expect(endState[0].title).toBe("1");
@@ -57,7 +59,7 @@ test("correct task should change its status", () => {
     { id: "2", title: "2", isDone: false },
   ];
 
-  const action = changeTaskStatusAction({ id: "2", isDone: true });
+  const action = updateTaskAction({ id: "2", changes: { isDone: true } });
   const endState = todoTaskReducer(startState, action);
 
   expect(endState[0].isDone).toBeFalsy();

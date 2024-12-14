@@ -6,7 +6,6 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 
-li {
-  text-align: left;
+ul {
   list-style-type: none;
 }

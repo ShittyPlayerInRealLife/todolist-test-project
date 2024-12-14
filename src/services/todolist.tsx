@@ -5,8 +5,8 @@ import {
   useCallback,
   useContext,
 } from "react";
-import { TTodoFilterValues } from "../state/todo-list/types";
 import { useAppDispatch } from "../state";
+import { FilterValues } from "../state/todo-list/types";
 import {
   changeTodoListFilterAction,
   changeTodoListTitleAction,
@@ -14,7 +14,7 @@ import {
 
 type TContext = {
   changeTodoListTitle: (newTitle: string) => void;
-  changeTodoListFilter: (filter: TTodoFilterValues) => void;
+  changeTodoListFilter: (filter: FilterValues) => void;
 };
 
 const context = createContext<TContext>({
@@ -24,17 +24,17 @@ const context = createContext<TContext>({
 
 export const useTodoListContext = () => useContext(context);
 
-export const TodoListService: FC<PropsWithChildren> = ({ children }) => {
+export const TodolistService: FC<PropsWithChildren> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const changeTodoListTitle = useCallback(
     (newTitle: string) => dispatch(changeTodoListTitleAction(newTitle)),
-    [dispatch],
+    [],
   );
 
   const changeTodoListFilter = useCallback(
-    (filter: TTodoFilterValues) => dispatch(changeTodoListFilterAction(filter)),
-    [dispatch],
+    (filter: FilterValues) => dispatch(changeTodoListFilterAction(filter)),
+    [],
   );
 
   return (

@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TTodoFilterValues, TTodoList } from "./types";
+import { TTodoList } from "./types";
+import { FilterValues } from "./types";
 
 const initialState = {
   title: "You can change title of Todo-list!",
-  filter: "all",
+  filter: FilterValues.ALL,
 };
 
 const todoListSlice = createSlice({
@@ -15,7 +16,7 @@ const todoListSlice = createSlice({
     },
     changeTodoListFilterAction: (
       state,
-      action: PayloadAction<TTodoFilterValues>,
+      action: PayloadAction<FilterValues>,
     ) => {
       state.filter = action.payload;
     },

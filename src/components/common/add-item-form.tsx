@@ -1,11 +1,16 @@
 import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
+import styled from "styled-components";
 import { Button, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import styled from "styled-components";
 
-const AddItemFormWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const AddItemFormInput = styled(Input)`
+  max-width: 264px;
+  width: 100%;
 `;
 
 type TProps = {
@@ -13,16 +18,16 @@ type TProps = {
 };
 
 export const AddItemForm = memo(({ addItem }: TProps) => {
-  const [itemTitle, setItemTitle] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [itemTitle, setItemTitle] = useState<string | undefined>(undefined);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setItemTitle(e.currentTarget.value);
   };
 
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (error !== null) {
-      setError(null);
+    if (error !== undefined) {
+      setError(undefined);
     }
     if (e.key === "Enter") {
       addItemHandler();
@@ -30,22 +35,19 @@ export const AddItemForm = memo(({ addItem }: TProps) => {
   };
 
   const addItemHandler = () => {
-    if (itemTitle.trim() !== "") {
+    if (itemTitle !== undefined) {
       addItem(itemTitle.trim());
-      setItemTitle("");
+      setItemTitle(undefined);
     } else {
       setError("Title is required");
     }
   };
 
   return (
-    <AddItemFormWrapper>
-      <Input
-        style={{ width: `264px` }}
-        placeholder={
-          error ? "Title is required!" : "Choose a title for a task!"
-        }
-        status={error ? "error" : ""}
+    <Wrapper>
+      <AddItemFormInput
+        placeholder={error ? "Title is required!" : "Choose a title for a task"}
+        status={error ? "error" : undefined}
         value={itemTitle}
         onChange={onChangeHandler}
         onKeyDown={onKeyPressHandler}
@@ -53,6 +55,6 @@ export const AddItemForm = memo(({ addItem }: TProps) => {
       <Button type="primary" onClick={addItemHandler}>
         <PlusOutlined />
       </Button>
-    </AddItemFormWrapper>
+    </Wrapper>
   );
 });

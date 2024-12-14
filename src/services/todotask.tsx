@@ -6,58 +6,48 @@ import {
   useContext,
 } from "react";
 import { useAppDispatch } from "../state";
+import { TTodoTasks } from "../state/todo-task/types";
 import {
   addTaskAction,
-  changeTaskStatusAction,
-  changeTaskTitleAction,
   removeTaskAction,
+  updateTaskAction,
 } from "../state/todo-task/slice";
 
 type TContext = {
   addTask: (title: string) => void;
   removeTask: (id: string) => void;
-  changeTaskTitle: (id: string, newTitle: string) => void;
-  changeTaskStatus: (id: string, isDone: boolean) => void;
+  updateTask: (id: string, changes: Partial<Omit<TTodoTasks, "id">>) => void;
 };
 
 const context = createContext<TContext>({
   addTask: () => {},
   removeTask: () => {},
-  changeTaskTitle: () => {},
-  changeTaskStatus: () => {},
+  updateTask: () => {},
 });
 
 export const useTodoTaskContext = () => useContext(context);
 
-export const TodoTaskService: FC<PropsWithChildren> = ({ children }) => {
+export const TodotaskService: FC<PropsWithChildren> = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const addTask = useCallback(
     (title: string) => dispatch(addTaskAction(title)),
-    [dispatch],
+    [],
   );
 
   const removeTask = useCallback(
     (id: string) => dispatch(removeTaskAction(id)),
-    [dispatch],
+    [],
   );
 
-  const changeTaskTitle = useCallback(
-    (id: string, title: string) =>
-      dispatch(changeTaskTitleAction({ id, title })),
-    [dispatch],
-  );
-
-  const changeTaskStatus = useCallback(
-    (id: string, isDone: boolean) =>
-      dispatch(changeTaskStatusAction({ id, isDone })),
-    [dispatch],
+  const updateTask = useCallback(
+    (id: string, changes: Partial<Omit<TTodoTasks, "id">>) =>
+      dispatch(updateTaskAction({ id, changes })),
+    [],
   );
 
   return (
-    <context.Provider
-      value={{ addTask, removeTask, changeTaskTitle, changeTaskStatus }}
-    >
+    <context.Provider value={{ addTask, removeTask, updateTask }}>
       {children}
     </context.Provider>
   );

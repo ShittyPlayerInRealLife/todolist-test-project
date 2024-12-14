@@ -1,42 +1,34 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { useTodoListContext } from "../../services/todolist-service";
-import { TTodoFilterValues } from "../../state/todo-list/types";
 import { Button } from "antd";
+import { useTodoListContext } from "../../services/todolist";
+import { FilterValues } from "../../state/todo-list/types";
 
-const TodoListFooterWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   justify-content: right;
-  width: 300px;
-  height: 30px;
+  max-width: 300px;
+  width: 100%;
   padding: 18px 20px 20px 40px;
   gap: 16px;
 `;
 
+const { ALL, ACTIVE, COMPLETED } = FilterValues;
+
 export const TodolistFooter: FC = () => {
   const { changeTodoListFilter } = useTodoListContext();
 
-  const onChangeFilterHandler = (listFilter: TTodoFilterValues) => {
-    switch (listFilter) {
-      case "all": {
-        return changeTodoListFilter("all");
-      }
-      case "active": {
-        return changeTodoListFilter("active");
-      }
-      case "completed": {
-        return changeTodoListFilter("completed");
-      }
-    }
+  const onChangeFilterHandler = (filter: FilterValues) => {
+    return changeTodoListFilter(filter);
   };
 
   return (
-    <TodoListFooterWrapper>
-      <Button onClick={() => onChangeFilterHandler("all")}>All</Button>
-      <Button onClick={() => onChangeFilterHandler("active")}>Active</Button>
-      <Button onClick={() => onChangeFilterHandler("completed")}>
+    <Wrapper>
+      <Button onClick={() => onChangeFilterHandler(ALL)}>All</Button>
+      <Button onClick={() => onChangeFilterHandler(ACTIVE)}>Active</Button>
+      <Button onClick={() => onChangeFilterHandler(COMPLETED)}>
         Completed
       </Button>
-    </TodoListFooterWrapper>
+    </Wrapper>
   );
 };

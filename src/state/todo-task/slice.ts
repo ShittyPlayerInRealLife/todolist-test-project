@@ -1,6 +1,6 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TTodoTasks } from "./types";
 import { v1 } from "uuid";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = [{ id: v1(), title: "An example of task", isDone: false }];
 
@@ -14,33 +14,20 @@ const todoTaskSlice = createSlice({
     removeTaskAction: (state, action: PayloadAction<string>) => {
       return state.filter((t) => t.id !== action.payload);
     },
-    changeTaskTitleAction: (
+    updateTaskAction: (
       state,
-      action: PayloadAction<{ id: string; title: string }>,
+      action: PayloadAction<{
+        id: string;
+        changes: Partial<Omit<TTodoTasks, "id">>;
+      }>,
     ) => {
-      return state.map((t) => {
-        return t.id === action.payload.id
-          ? { ...t, title: action.payload.title }
-          : { ...t };
-      });
-    },
-    changeTaskStatusAction: (
-      state,
-      action: PayloadAction<{ id: string; isDone: boolean }>,
-    ) => {
-      return state.map((t) => {
-        return t.id === action.payload.id
-          ? { ...t, isDone: action.payload.isDone }
-          : { ...t };
-      });
+      return state.map((t) =>
+        t.id === action.payload.id ? { ...t, ...action.payload.changes } : t,
+      );
     },
   },
 });
 
-export const {
-  addTaskAction,
-  removeTaskAction,
-  changeTaskTitleAction,
-  changeTaskStatusAction,
-} = todoTaskSlice.actions;
+export const { addTaskAction, removeTaskAction, updateTaskAction } =
+  todoTaskSlice.actions;
 export const todoTaskReducer = todoTaskSlice.reducer;

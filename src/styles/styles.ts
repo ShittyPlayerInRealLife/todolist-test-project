@@ -34,29 +34,29 @@ export const AnimatedTextWrapper = styled.div`
     }
   }
 
-  :first-child {
+  div {
     font-family: monospace;
-    font-size: 64px;
-    width: 600px;
-    height: 160px;
     text-align: center;
-    text-shadow: 5px 4px 0 rgba(0, 0, 0, 0.2);
-    animation: slideInFromLeft 4s ease-out 2s;
-    animation-fill-mode: forwards;
     opacity: 0;
   }
 
+  :first-child {
+    font-size: 64px;
+    width: 600px;
+    height: 160px;
+    text-shadow: 5px 4px 0 rgba(0, 0, 0, 0.2);
+    animation: slideInFromLeft 4s ease-out 2s;
+    animation-fill-mode: forwards;
+  }
+
   :last-child {
-    font-family: monospace;
     position: absolute;
     top: 260px;
     left: 360px;
     width: 360px;
-    text-align: center;
     font-size: 28px;
     text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
     animation: slideInFromLeft 3s ease-out 3s;
     animation-fill-mode: forwards;
-    opacity: 0;
   }
 `;

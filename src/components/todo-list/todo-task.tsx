@@ -1,19 +1,15 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import styled from "styled-components";
-import { ItemName } from "../common/item-name";
-import { useTodoTaskContext } from "../../services/todotask-service";
 import { Button, Checkbox } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
+import { ItemName } from "../common/item-name";
+import { useTodoTaskContext } from "../../services/todotask";
 
-const TodoTaskWrapper = styled.li`
+const Wrapper = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-`;
-
-const ErrorTaskTitleWrapper = styled.div`
-  color: red;
 `;
 
 type TProps = {
@@ -23,40 +19,29 @@ type TProps = {
 };
 
 export const TodoTask = memo(({ id, title, isDone }: TProps) => {
-  const { changeTaskTitle, removeTask, changeTaskStatus } =
-    useTodoTaskContext();
+  const { removeTask, updateTask } = useTodoTaskContext();
 
-  const removeTaskHandler = (taskId: string) => {
-    removeTask(taskId);
-  };
-
-  const changeTaskTitleHandler = (newTitle: string) => {
-    changeTaskTitle(id, newTitle);
-  };
+  const changeTaskTitleHandler = useCallback(
+    (newTitle: string) => {
+      updateTask(id, { title: newTitle });
+    },
+    [updateTask],
+  );
 
   const changeTaskStatusHandler = (taskId: string, isTaskDone: boolean) => {
-    changeTaskStatus(taskId, !isTaskDone);
+    updateTask(taskId, { isDone: !isTaskDone });
   };
 
   return (
-    <TodoTaskWrapper>
+    <Wrapper>
       <Checkbox
         defaultChecked={isDone}
         onChange={() => changeTaskStatusHandler(id, isDone)}
       />
-      {title ? (
-        <ItemName title={title} onChange={changeTaskTitleHandler} />
-      ) : (
-        <ErrorTaskTitleWrapper>
-          <ItemName
-            title={"You have to write a title!"}
-            onChange={changeTaskTitleHandler}
-          />
-        </ErrorTaskTitleWrapper>
-      )}
-      <Button type="primary" danger onClick={() => removeTaskHandler(id)}>
+      <ItemName title={title} onChange={changeTaskTitleHandler} />
+      <Button type="primary" danger onClick={() => removeTask(id)}>
         <CloseOutlined />
       </Button>
-    </TodoTaskWrapper>
+    </Wrapper>
   );
 });
